@@ -278,8 +278,10 @@ static void showTy ( FILE* f, MPI_Datatype ty )
    else if (ty == MPI_LONG_INT)       fprintf(f,"LONG_INT");
    else if (ty == MPI_SHORT_INT)      fprintf(f,"SHORT_INT");
    else if (ty == MPI_2INT)           fprintf(f,"2INT");
+#if !((OMPI_MAJOR_VERSION >= 4) && !(OMPI_ENABLE_MPI1_COMPAT))
    else if (ty == MPI_UB)             fprintf(f,"UB");
    else if (ty == MPI_LB)             fprintf(f,"LB");
+#endif
 #  if defined(MPI_WCHAR)
    else if (ty == MPI_WCHAR)          fprintf(f,"WCHAR");
 #  endif
@@ -738,8 +740,10 @@ void walk_type ( void(*f)(void*,long), char* base, MPI_Datatype ty )
          f(base + offsetof(Ty,loc), sizeof(int));
          return;
       }
+#if !((OMPI_MAJOR_VERSION >= 4) && !(OMPI_ENABLE_MPI1_COMPAT))
       if (ty == MPI_LB || ty == MPI_UB)
          return; /* have zero size, so nothing needs to be done */
+#endif
       goto unhandled;
       /*NOTREACHED*/
    }
