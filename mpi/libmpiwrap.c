@@ -459,7 +459,12 @@ static long extentOfTy ( MPI_Datatype ty )
 {
    int      r;
    MPI_Aint n;
+#if defined(MPI_VERSION) && (MPI_VERSION >= 2)
+   MPI_Aint l;
+   r = PMPI_Type_get_extent(ty, &l, &n);
+#else
    r = PMPI_Type_extent(ty, &n);
+#endif
    assert(r == MPI_SUCCESS);
    return (long)n;
 }
